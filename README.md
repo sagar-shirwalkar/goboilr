@@ -4,12 +4,17 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/sagar-shirwalkar/goboilr?style=flat-square)](https://goreportcard.com/report/github.com/sagar-shirwalkar/goboilr)
 [![Coverage](https://img.shields.io/badge/coverage-74%25-b8d323?style=flat-square&label=Coverage)](https://pkg.go.dev/github.com/sagar-shirwalkar/goboilr)
 [![GitHub tag](https://img.shields.io/github/tag/sagar-shirwalkar/goboilr?include_prereleases=&sort=semver&color=fbd12b&style=flat-square&label=Tag)](https://github.com/sagar-shirwalkar/goboilr/releases/)
+![GitHub code size](https://img.shields.io/github/languages/code-size/sagar-shirwalkar/goboilr?style=flat-square&label=Code%20Size)
 [![Issues](https://img.shields.io/github/issues/sagar-shirwalkar/goboilr?style=flat-square&color=21ca26&label=Issues)](https://github.com/sagar-shirwalkar/goboilr/issues)
 [![License](https://img.shields.io/github/license/sagar-shirwalkar/goboilr?style=flat-square&color=bd2bfb&label=License)](#license)
 
 **GoBoilr** is a lightweight, zero-dependency code generator for Go. It eliminates boilerplate by automatically generating type-safe Getters, Setters, and Constructors for your structs using standard Go tags and comments.
 
 It is designed to work seamlessly with `go generate` and produces high-performance code with no runtime reflection.
+
+Can also be combined with **[GoLoom](https://github.com/sagar-shirwalkar/goloom)** to quickly generate rich domain models directly from JSON schemas:
+
+[![sagar-shirwalkar - goboilr](https://img.shields.io/static/v1?label=sagar-shirwalkar&message=GoLoom&color=fbd12b&logo=github&style=flat-square)](https://github.com/sagar-shirwalkar/goloom "Go to GitHub repo")
 
 ## Features
 
@@ -18,7 +23,7 @@ It is designed to work seamlessly with `go generate` and produces high-performan
 * **Validation Hooks:** Auto-wires setters to your custom validation logic.
 * **Constructors:** Opt-in generation of "All-Args" constructors.
 * **Safe Integration:** Constructor code is generated in a commented-out block for easy copy-pasting, preventing redeclaration errors.
-* **Complex Type Support:** Handles slices, maps, pointers, and external package imports (e.g., `time.Time`, `json.RawMessage`) automatically.
+* **Complex Type Support:** Handles slices, maps, pointers, and external package imports (like `time.Time`, `json.RawMessage`) automatically.
 * **Standard Tooling:** Works out-of-the-box with `go generate`.
 
 ## Installation
