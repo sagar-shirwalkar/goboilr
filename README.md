@@ -3,8 +3,9 @@
 ![Go Version](https://img.shields.io/github/go-mod/go-version/sagar-shirwalkar/goboilr?style=flat-square&logo=go&color=%2300ADD8)
 [![Go Report Card](https://goreportcard.com/badge/github.com/sagar-shirwalkar/goboilr?style=flat-square)](https://goreportcard.com/report/github.com/sagar-shirwalkar/goboilr)
 [![Go Reference](https://pkg.go.dev/badge/github.com/sagar-shirwalkar/goboilr.svg)](https://pkg.go.dev/github.com/sagar-shirwalkar/goboilr)
-![Issues](https://img.shields.io/github/issues/sagar-shirwalkar/goboilr?style=flat-square&label=Issues)
-![License](https://img.shields.io/github/license/sagar-shirwalkar/goboilr?style=flat-square&color=dark-green&label=License)
+[![GitHub tag](https://img.shields.io/github/tag/sagar-shirwalkar/goboilr?include_prereleases=&sort=semver&color=fbd12b&style=flat-square)](https://github.com/sagar-shirwalkar/goboilr/releases/)
+[![issues - goboilr](https://img.shields.io/github/issues/sagar-shirwalkar/goboilr?style=flat-square&color=21ca26)](https://github.com/sagar-shirwalkar/goboilr/issues)
+[![License](https://img.shields.io/github/license/sagar-shirwalkar/goboilr?style=flat-square&color=bd2bfb&label=License)](#license)
 
 **GoBoilr** is a lightweight, zero-dependency code generator for Go. It eliminates boilerplate by automatically generating type-safe Getters, Setters, and Constructors for your structs using standard Go tags and comments.
 
@@ -122,6 +123,10 @@ GoBoilr will create two files in the same directory as your source file:
     */
     ```
 
+## Documentation
+
+[![view - Documentation](https://img.shields.io/badge/view-Documentation-fbd12b?style=for-the-badge)](/docs/ "Go to project documentation")
+
 ## License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Released under [MIT](/LICENSE) by [@sagar-shirwalkar](https://github.com/sagar-shirwalkar)
