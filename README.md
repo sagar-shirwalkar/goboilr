@@ -2,7 +2,7 @@
 
 ![Go Version](https://img.shields.io/github/go-mod/go-version/sagar-shirwalkar/goboilr?style=flat-square&logo=go&color=%2300ADD8)
 [![Go Report Card](https://goreportcard.com/badge/github.com/sagar-shirwalkar/goboilr?style=flat-square)](https://goreportcard.com/report/github.com/sagar-shirwalkar/goboilr)
-[![Coverage](https://img.shields.io/badge/coverage-74%25-b8d323?style=flat-square&label=Coverage)](https://pkg.go.dev/github.com/sagar-shirwalkar/goboilr)
+[![codecov](https://img.shields.io/codecov/c/github/sagar-shirwalkar/goboilr/main.svg?style=flat-square&label=Coverage)](https://codecov.io/gh/sagar-shirwalkar/goboilr)
 [![GitHub tag](https://img.shields.io/github/tag/sagar-shirwalkar/goboilr?include_prereleases=&sort=semver&color=fbd12b&style=flat-square&label=Tag)](https://github.com/sagar-shirwalkar/goboilr/releases/)
 ![GitHub code size](https://img.shields.io/github/languages/code-size/sagar-shirwalkar/goboilr?style=flat-square&label=Code%20Size)
 [![Issues](https://img.shields.io/github/issues/sagar-shirwalkar/goboilr?style=flat-square&color=21ca26&label=Issues)](https://github.com/sagar-shirwalkar/goboilr/issues)
