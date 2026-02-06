@@ -8,7 +8,7 @@
 [![Issues](https://img.shields.io/github/issues/sagar-shirwalkar/goboilr?style=flat-square&color=21ca26&label=Issues)](https://github.com/sagar-shirwalkar/goboilr/issues)
 [![License](https://img.shields.io/github/license/sagar-shirwalkar/goboilr?style=flat-square&color=bd2bfb&label=License)](#license)
 
-**GoBoilr** is a lightweight, zero-dependency code generator for Go. It eliminates boilerplate by automatically generating type-safe Getters, Setters, and Constructors for your structs using standard Go tags and comments.
+**GoBoilr** is a lightweight, zero-dependency code generator for Go. It eliminates boilerplate by automatically generating type-safe Getters, Setters, Constructors and Builders for your structs using standard Go tags and comments.
 
 It is designed to work seamlessly with `go generate` and produces high-performance code with no runtime reflection.
 
