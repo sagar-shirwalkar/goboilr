@@ -10,25 +10,38 @@ import (
 )
 
 func main() {
+	// We pass real OS arguments and the real os.Getenv function
+	// os.Args[1:] skips the program name itself
+	if err := run(os.Args[1:], os.Getenv); err != nil {
+		log.Fatal(err)
+	}
+}
+
+// run contains the main logic, decoupled from os.Exit for testing
+func run(args []string, getEnv func(string) string) error {
 	// 1. Determine Input File
-	// Check flags first, then environment variable (set by go generate)
-	fileFlag := flag.String("file", "", "The Go source file to process")
-	flag.Parse()
+	// Use a local FlagSet to avoid polluting global state during tests
+	fs := flag.NewFlagSet("goboilr", flag.ContinueOnError)
+	fileFlag := fs.String("file", "", "The Go source file to process")
+
+	// Parse the provided arguments
+	if err := fs.Parse(args); err != nil {
+		return err
+	}
 
 	targetFile := *fileFlag
 	if targetFile == "" {
-		targetFile = os.Getenv("GOFILE")
+		targetFile = getEnv("GOFILE")
 	}
 
 	if targetFile == "" {
-		log.Fatal("Error: No file specified. Use -file flag or run via 'go generate'")
+		return fmt.Errorf("error: no file specified. Use -file flag or run via 'go generate'")
 	}
 
 	// 2. Resolve Absolute Paths
-	// This ensures logic works whether we are in root or subfolder
 	absPath, err := filepath.Abs(targetFile)
 	if err != nil {
-		log.Fatal(err)
+		return fmt.Errorf("failed to resolve path: %w", err)
 	}
 
 	dir := filepath.Dir(absPath)
@@ -45,16 +58,18 @@ func main() {
 	// 4. Parse & Generate
 	data, err := ParseFile(absPath)
 	if err != nil {
-		log.Fatalf("Parsing failed: %v", err)
+		return fmt.Errorf("parsing failed: %w", err)
 	}
 
 	if err := GenerateFile(data, accessorsFile, false); err != nil {
-		log.Fatalf("Failed to generate accessors: %v", err)
+		return fmt.Errorf("failed to generate accessors: %w", err)
 	}
 	fmt.Printf("  -> Created %s\n", filepath.Base(accessorsFile))
 
 	if err := GenerateFile(data, constructorsFile, true); err != nil {
-		log.Fatalf("Failed to generate constructors: %v", err)
+		return fmt.Errorf("failed to generate constructors: %w", err)
 	}
 	fmt.Printf("  -> Created %s\n", filepath.Base(constructorsFile))
+
+	return nil
 }
