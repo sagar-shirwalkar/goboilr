@@ -38,12 +38,40 @@ func (x *{{$s}}) Set{{.MethodName}}(v {{.Type}}) bool {
 const constructorTemplate = `
 {{range .Structs}}
 {{if .GenerateConstructor}}
+/*
 func New{{.StructName}}({{range $i, $e := .AllFields}}{{if $i}}, {{end}}{{$e.ArgName}} {{$e.Type}}{{end}}) *{{.StructName}} {
 	return &{{.StructName}}{
-		{{range .AllFields}}{{.Name}}: {{.ArgName}},
-		{{end}}
+{{range .AllFields}}		{{.Name}}: {{.ArgName}},
+{{end}}	}
+}
+*/
+{{end}}
+
+{{if .GenerateBuilder}}
+// -----------------------------------------------------------------------------
+// {{.StructName}} Builder
+// -----------------------------------------------------------------------------
+type {{.StructName}}Builder struct {
+	target *{{.StructName}}
+}
+
+func New{{.StructName}}Builder() *{{.StructName}}Builder {
+	return &{{.StructName}}Builder{
+		target: &{{.StructName}}{},
 	}
 }
+
+func (b *{{.StructName}}Builder) Build() *{{.StructName}} {
+	return b.target
+}
+
+{{$s := .StructName}}
+{{range .AllFields}}
+func (b *{{$s}}Builder) {{.Name}}(v {{.Type}}) *{{$s}}Builder {
+	b.target.{{.Name}} = v
+	return b
+}
+{{end}}
 {{end}}
 {{end}}
 `
@@ -95,21 +123,6 @@ func GenerateFile(data *FileData, outputPath string, isConstructor bool) error {
 	if err != nil {
 		os.WriteFile(outputPath, fileBuf.Bytes(), 0644)
 		return fmt.Errorf("formatting failed: %w", err)
-	}
-
-	// 5. Wrap Constructors
-	if isConstructor {
-		src := string(formattedBytes)
-		pkgPrefix := fmt.Sprintf("package %s", data.PackageName)
-		splitIdx := strings.Index(src, pkgPrefix)
-
-		if splitIdx != -1 {
-			endOfPkg := splitIdx + len(pkgPrefix)
-			// Added "\n" at the very end to match standard file endings
-			finalContent := src[:endOfPkg] + "\n\n/*\n" + strings.TrimSpace(src[endOfPkg:]) + "\n*/\n"
-			return os.WriteFile(outputPath, []byte(finalContent), 0644)
-		}
-		return os.WriteFile(outputPath, formattedBytes, 0644)
 	}
 
 	return os.WriteFile(outputPath, formattedBytes, 0644)
