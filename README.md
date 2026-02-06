@@ -22,13 +22,14 @@ Can also be combined with **[GoLoom](https://github.com/sagar-shirwalkar/goloom)
 * **Getters & Setters:** Generates standard accessor methods based on struct tags.
 * **Validation Hooks:** Auto-wires setters to your custom validation logic.
 * **Constructors:** Opt-in generation of "All-Args" constructors.
+* **Builders:** Builder generation - super handy if "All-Args" constructors have too many arguments.
 * **Safe Integration:** Constructor code is generated in a commented-out block for easy copy-pasting, preventing redeclaration errors.
 * **Complex Type Support:** Handles slices, maps, pointers, and external package imports (like `time.Time`, `json.RawMessage`) automatically.
 * **Standard Tooling:** Works out-of-the-box with `go generate`.
 
 ## Installation
 
-### Option 1: Install as a Tool (Recommended)
+### Option 1: Install as a Tool (Convenient personal use)
 
 Install the binary globally to use it via the command line or `go generate`.
 
@@ -36,7 +37,7 @@ Install the binary globally to use it via the command line or `go generate`.
 go install github.com/sagar-shirwalkar/goboilr@latest
 ```
 
-### Option 2: Add as a dependency
+### Option 2: Add as a dependency (CI-friendly, recommended for teams)
 
 If you want to track the version in your go.mod file:
 
@@ -64,21 +65,32 @@ import (
 )
 
 /* Trigger for directing the generator to this file */
+
 //go:generate goboilr
 
-//gen:new
+// gen:new
+// gen:builder
 type User struct {
-    name      string       `gen:"get,set"`
-    age       int          `gen:"get,set,val"`
-    weight    int          `gen:"get,set,val"`
-    birthDate time.Time    `gen:"get,set"`
-    config    j.RawMessage `gen:"get,set"`
+    // Embedded field (No tag, but affects constructor/builder)
+    Base
+
+    Name string `gen:"get,set"`
+    Age  int    `gen:"get,set,val"`
+
+    // Complex types
+    Tags     []string     `gen:"get"`
+    Metadata j.RawMessage `gen:"get"`
+    Ptr      *int         `gen:"set"`
+}
+
+type Base struct {
+    ID string `gen:"get"`
 }
 ```
 
 The generator works with complex types and imports, and if you use the `val` tag, validation will be carried out in the generated setter.
 
-The validation logic must be written by you, but your validation `func` must follow a naming convention for the validation hook on the setter to work. 
+The validation logic must be written by you, but your validation `func` must follow a naming convention for the validation hook on the setter to work.
 
 Let's take the **User's** `age` as an example:
 
@@ -118,14 +130,49 @@ GoBoilr will create two files in the same directory as your source file:
     }
     ```
 
-2. **user_constructors.go** : Contains the constructor logic wrapped in comments (to avoid potential conflicts). You can simply copy this func into your **user.go** file if you need it.
+2. **user_constructors.go** : Contains the constructor logic wrapped in comments (to avoid potential conflicts), which you can simply copy into your **user.go** file if you need it. Also contains the generated builders.
 
     ```go
     /*
-    func NewUser(id string, name string, ...) *User {
+    func NewUser(base Base, name string, age int, ...) *User {
         return &User{...}
     }
     */
+
+    // -----------------------------------------------------------------------------
+    // User Builder
+    // -----------------------------------------------------------------------------
+
+    type UserBuilder struct {
+        target *User
+    }
+
+    func NewUserBuilder() *UserBuilder {
+        return &UserBuilder{
+            target: &User{},
+        }
+    }
+
+    func (b *UserBuilder) Build() *User {
+        return b.target
+    }
+
+    func (b *UserBuilder) Base(v Base) *UserBuilder {
+        b.target.Base = v
+        return b
+    }
+
+    func (b *UserBuilder) Name(v string) *UserBuilder {
+        b.target.Name = v
+        return b
+    }
+
+    func (b *UserBuilder) Age(v int) *UserBuilder {
+        b.target.Age = v
+        return b
+    }
+
+    /* And other builder funcs */
     ```
 
 ## Documentation
