@@ -5,8 +5,9 @@ import (
 )
 
 // gen:new
+// gen:builder
 type ComplexStruct struct {
-	// Embedded field (No tag, but affects constructor)
+	// Embedded field (No tag, but affects constructor/builder)
 	Base
 
 	Name string `gen:"get,set"`

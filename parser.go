@@ -30,11 +30,18 @@ func ParseFile(filePath string) (*FileData, error) {
 			continue
 		}
 
+		// Check doc comments for generation triggers
 		hasConstructorTag := false
+		hasBuilderTag := false
+
 		if genDecl.Doc != nil {
 			for _, comment := range genDecl.Doc.List {
-				if strings.Contains(comment.Text, "gen:new") {
+				text := comment.Text
+				if strings.Contains(text, "gen:new") {
 					hasConstructorTag = true
+				}
+				if strings.Contains(text, "gen:builder") {
+					hasBuilderTag = true
 				}
 			}
 		}
@@ -52,6 +59,7 @@ func ParseFile(filePath string) (*FileData, error) {
 			sData := StructData{
 				StructName:          typeSpec.Name.Name,
 				GenerateConstructor: hasConstructorTag,
+				GenerateBuilder:     hasBuilderTag,
 			}
 
 			for _, field := range structType.Fields.List {
@@ -80,6 +88,7 @@ func ParseFile(filePath string) (*FileData, error) {
 				}
 			}
 
+			// Add struct if we have fields (and triggers usually imply fields exist)
 			if len(sData.AllFields) > 0 {
 				data.Structs = append(data.Structs, sData)
 			}

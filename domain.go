@@ -24,6 +24,7 @@ type FieldInfo struct {
 type StructData struct {
 	StructName          string
 	GenerateConstructor bool
+	GenerateBuilder     bool
 	AllFields           []FieldInfo
 	Accessors           []FieldInfo
 }
